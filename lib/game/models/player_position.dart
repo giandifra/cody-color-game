@@ -1,8 +1,7 @@
+import 'package:codyroby_game/game/models/game_status.dart';
 import 'package:flutter/material.dart';
 
-
-class EndGameException with Exception{}
-
+class EndGameException with Exception {}
 
 enum RobyRotation { nord, est, sud, ovest }
 
@@ -194,36 +193,9 @@ class PlayerPosition {
     }
   }
 
-/*  PlayerPosition moveUp() {
-    if (y == 0) {
-      throw Exception();
-    }
-    return PlayerPosition(x: x, y: y - 1);
-  }
-
-  PlayerPosition moveDown() {
-    if (y == 4) {
-      throw Exception();
-    }
-    return PlayerPosition(x: x, y: y + 1);
-  }
-
-  PlayerPosition moveLeft() {
-    if (x == 0) {
-      throw Exception();
-    }
-    return PlayerPosition(x: x - 1, y: y);
-  }
-
-  PlayerPosition moveRight() {
-    if (x == 4) {
-      throw Exception();
-    }
-    return PlayerPosition(x: x + 1, y: y);
-  }*/
-
+  @override
   String toString() {
-    return 'x: $x y: $y rotation $rotation';
+    return 'x: $x y: $y ${enumToString(rotation)}';
   }
 
   PlayerPosition copyWith({int? x, int? y, RobyRotation? rotation}) {

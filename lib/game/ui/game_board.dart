@@ -30,12 +30,13 @@ class _GameBoardState extends State<GameBoard> {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
-        // color: Colors.green,
+        padding: const EdgeInsets.all(16),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return Stack(
               children: [
                 GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: 25,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5,
@@ -66,7 +67,8 @@ class _GameBoardState extends State<GameBoard> {
                   Center(
                     child: Container(
                       color: Colors.red.withOpacity(0.5),
-                      constraints: const BoxConstraints(maxWidth: 400),
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 200),
                       child: Text(
                         'In attesa del secondo giocatore',
                         style: Theme.of(context).textTheme.headline4,
@@ -78,9 +80,10 @@ class _GameBoardState extends State<GameBoard> {
                   Center(
                     child: Container(
                       color: Colors.blue.withOpacity(0.5),
-                      constraints: const BoxConstraints(maxWidth: 400),
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 200),
                       child: Text(
-                        '${widget.status.winner == widget.player ? 'Hai vinto' : 'Hai perso'}',
+                        widget.status.winner == widget.player ? 'Hai vinto' : 'Hai perso',
                         style: Theme.of(context).textTheme.headline4,
                         textAlign: TextAlign.center,
                       ),
@@ -90,7 +93,8 @@ class _GameBoardState extends State<GameBoard> {
                   Center(
                     child: Container(
                       color: Colors.red.withOpacity(0.5),
-                      constraints: const BoxConstraints(maxWidth: 400),
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 200),
                       child: Text(
                         'È il turno del tuo avversario',
                         style: Theme.of(context).textTheme.headline4,
@@ -106,22 +110,31 @@ class _GameBoardState extends State<GameBoard> {
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       color: Colors.green.withOpacity(0.5),
-                      constraints: const BoxConstraints(maxWidth: 400),
+                      constraints:
+                          const BoxConstraints(maxWidth: 400, maxHeight: 200),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.wind_power,
                             size: 40,
                           ),
                           Text(
                             'Hai un colore davanti',
-                            style: Theme.of(context).textTheme.headline4,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 16),
                           GenericButton(
-                            text: 'AutoMove',
+                            autoSizeText: true,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1
+                                ?.copyWith(color: Colors.white),
+                            text: 'Auto Move',
                             color: Colors.white,
                             onTap: () {
                               widget.status.autoMove();

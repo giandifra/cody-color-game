@@ -1,5 +1,6 @@
 import 'package:codyroby_game/firestore_ref.dart';
 import 'package:codyroby_game/game/models/game_status.dart';
+import 'package:codyroby_game/home/generic_button.dart';
 import 'package:codyroby_game/main.dart';
 import 'package:codyroby_game/match_making/models/game_session.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _CreateGameSessionDialogState extends State<CreateGameSessionDialog> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Nuova partita'),
+          const Text('Nuova partita',),
           const SizedBox(height: 16),
           TextField(
             controller: matchNameController,
@@ -41,32 +42,34 @@ class _CreateGameSessionDialogState extends State<CreateGameSessionDialog> {
                 const InputDecoration(hintText: 'Digita il nome della partita'),
           ),
           const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                print('start creation ');
-                final name = matchNameController.text.trim();
+          Center(
+            child: GenericButton(
+              onTap: () async {
+                try {
+                  print('start creation ');
+                  final name = matchNameController.text.trim();
 
-                final gameSession = GameSession(
-                  createdAt: DateTime.now(),
-                  name: name,
-                  p1: gameUser!,
-                );
+                  final gameSession = GameSession(
+                    createdAt: DateTime.now(),
+                    name: name,
+                    p1: gameUser!,
+                  );
 
-                final docRef =
-                    await FirestoreRef.gameSessionsCollection.add(gameSession);
+                  final docRef =
+                      await FirestoreRef.gameSessionsCollection.add(gameSession);
 
-                print('game created ');
-                await FirestoreRef.gameSessionStatusDoc(docRef.id)
-                    .set(GameStatus.initialGame(docRef.id));
+                  print('game created ');
+                  await FirestoreRef.gameSessionStatusDoc(docRef.id)
+                      .set(GameStatus.initialGame(docRef.id));
 
-                print('setup complete');
-                Navigator.of(context).pop();
-              } catch (ex) {
-                print(ex);
-              }
-            },
-            child: const Text('Crea'),
+                  print('setup complete');
+                  Navigator.of(context).pop();
+                } catch (ex) {
+                  print(ex);
+                }
+              },
+              text: 'CREA',
+            ),
           ),
         ],
       ),

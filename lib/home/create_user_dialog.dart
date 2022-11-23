@@ -1,3 +1,4 @@
+import 'package:codyroby_game/home/generic_button.dart';
 import 'package:codyroby_game/main.dart';
 import 'package:codyroby_game/match_making/models/game_user.dart';
 import 'package:flutter/material.dart';
@@ -38,8 +39,9 @@ class _CreateUserDialogState extends State<CreateUserDialog> {
             decoration: const InputDecoration(hintText: 'Digita il tuo nome'),
           ),
           const SizedBox(height: 24),
-          ElevatedButton(
-            onPressed: () async {
+          GenericButton(
+            color: Colors.pink,
+            onTap: () async {
               try {
                 final username = userNameController.text.trim();
 
@@ -53,7 +55,7 @@ class _CreateUserDialogState extends State<CreateUserDialog> {
                 print(ex);
               }
             },
-            child: const Text('Crea'),
+            text: 'Registrati',
           ),
         ],
       ),

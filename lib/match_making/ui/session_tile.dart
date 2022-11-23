@@ -50,6 +50,7 @@ class SessionTile extends StatelessWidget {
               builder: (context) {
                 return GameScreen(
                   gameId: gameId,
+                  gameName: session.name,
                 );
               },
             ),

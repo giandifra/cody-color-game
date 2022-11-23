@@ -12,10 +12,12 @@ import 'package:flutter/material.dart';
 
 class GameScreen extends StatefulWidget {
   final String gameId;
+  final String gameName;
 
   const GameScreen({
     Key? key,
     required this.gameId,
+    required this.gameName,
   }) : super(key: key);
 
   @override
@@ -23,25 +25,10 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  // var p1 = PlayerPosition(x: 0, y: 0);
-  // var p2 = PlayerPosition(x: 2, y: 2);
-
-  // String? player;
-  //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   player = widget.gameSession.p1 == userId
-  //       ? 'p1'
-  //       : widget.gameSession.p2 == userId
-  //           ? 'p2'
-  //           : null;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text(widget.gameName),),
       body: StreamBuilder<DocumentSnapshot<GameSession>>(
         stream: FirestoreRef.gameSessionDoc(widget.gameId).snapshots(),
         builder: (BuildContext context, snapshot) {
@@ -78,13 +65,14 @@ class _GameScreenState extends State<GameScreen> {
                     final p1 = status.p1;
                     final p2 = status.p2;
 
-                    // final playerPosition = player == Player.p1 ? p1 : p2;
-                    final canPlay = session.p2 != null && status.turn == player;
+                    final canPlay = session.p2 != null &&
+                        status.turn == player &&
+                        status.winner == null;
+
                     return Column(
-                      // mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 16),
                         if (session.p2 != null) ...[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +81,8 @@ class _GameScreenState extends State<GameScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(session.p1.name),
-                                  GreenRoby(rotation: RobyRotation.nord),
+                                  const GreenRoby(
+                                      rotation: RobyRotation.nord),
                                 ],
                               ),
                               const SizedBox(width: 24),
@@ -101,14 +90,14 @@ class _GameScreenState extends State<GameScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(session.p2!.name),
-                                  RedRoby(rotation: RobyRotation.nord),
+                                  const RedRoby(rotation: RobyRotation.nord),
                                 ],
                               )
                             ],
                           ),
                           Text(
                             'È il turno di ${status.turn == Player.p1 ? session.p1.name : session.p2?.name}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                             ),
                           ),
@@ -144,64 +133,6 @@ class _GameScreenState extends State<GameScreen> {
                                       ),
                                     ),
                                   ),
-                              /*GameActionCard(
-                                onTap: canPlay
-                                    ? () {
-                                        final newPosition = player
-                                            .nextPosition(CellColor.yellow);
-                                        final newBoard = status.board
-                                            .applyColor(
-                                                newPosition.x,
-                                                newPosition.y,
-                                                CellColor.yellow);
-                                        FirestoreRef.gameSessionStatusDoc(
-                                                widget.gameId)
-                                            .update({
-                                          playerTag: newPosition.toJson(),
-                                          'board': newBoard.toJson(),
-                                        });
-                                      }
-                                    : null,
-                                asset: 'assets/turn_left.png',
-                              ),
-                              const SizedBox(width: 16),
-                              GameActionCard(
-                                onTap: canPlay
-                                    ? () {
-                                        final newPosition =
-                                            player.nextPosition(CellColor.grey);
-                                        final newBoard = status.board
-                                            .applyColor(newPosition.x,
-                                                newPosition.y, CellColor.grey);
-                                        FirestoreRef.gameSessionStatusDoc(
-                                                widget.gameId)
-                                            .update({
-                                          playerTag: newPosition.toJson(),
-                                          'board': newBoard.toJson(),
-                                        });
-                                      }
-                                    : null,
-                                asset: 'assets/move_forward.png',
-                              ),
-                              const SizedBox(width: 16),
-                              GameActionCard(
-                                onTap: canPlay
-                                    ? () {
-                                        final newPosition =
-                                            player.nextPosition(CellColor.red);
-                                        final newBoard = status.board
-                                            .applyColor(newPosition.x,
-                                                newPosition.y, CellColor.red);
-                                        FirestoreRef.gameSessionStatusDoc(
-                                                widget.gameId)
-                                            .update({
-                                          playerTag: newPosition.toJson(),
-                                          'board': newBoard.toJson(),
-                                        });
-                                      }
-                                    : null,
-                                asset: 'assets/turn_right.png',
-                              ),*/
                             ],
                           ),
                         ),
